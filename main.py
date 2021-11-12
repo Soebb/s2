@@ -397,16 +397,16 @@ async def urlss(client, message):
     except:
         pass
     chat_id = message.from_user.id
-    for filename in os.listdir("previews"):
-        if sub in filename:
-            vids += filename + "\n"
     
     Url = message.text
     cut = await client.ask(message.chat.id,'زمان آغار و پایان برش؟', filters=filters.text)
-    #preview_video = await client.ask(message.chat.id,'ویدیویی که میخوای ادغام شه؟بفرس', filters=filters.video)
+    preview_video = await client.ask(message.chat.id,'ویدیویی که میخوای ادغام شه؟بفرس', filters=filters.video)
     mess = await message.reply("cutting and merging...")
-    #await client.download_media(message=preview_video.video, file_name="temp/vid3.mp4")
- 
+    await client.download_media(message=preview_video.video, file_name="temp/vid720.mp4")
+    preview_video = await client.ask(message.chat.id,'ویدیویی که میخوای ادغام شه؟بفرس', filters=filters.video)
+    mess = await message.reply("cutting and merging...")
+    await client.download_media(message=preview_video.video, file_name="temp/vid2.mp4")
+
     opts1080 = {
         'format': 'best[height<=1080]',
         'geo_bypass':True,
@@ -466,23 +466,8 @@ async def urlss(client, message):
     name480 = re.sub(r'\S*0p\S*|\S*0P\S*', '480P', sub+'.mkv').replace('.ass', '').replace('.srt', '') if sub.__contains__('0p') or sub.__contains__('0P') else sub.replace('.ass', '').replace('.srt', '')+" 480P.mkv"
 
     try:
-        with youtube_dl.YoutubeDL(opts720) as ytdl:
-            ytdl.extract_info(Url, download=True)
-        process = await asyncio.create_subprocess_exec(
-            *trim_command,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-
         #os.system("mp4box -add temp/vid3.mp4 -cat temp/vid2.mp4 temp/out.mp4")
         
-        #clip1 = VideoFileClip(f"vids.splitlines()[0]")
-        #clip2 = VideoFileClip("temp/vid2.mp4")
-        #Merge = concatenate_videoclips([clip1, clip2])
-        #Merge.write_videofile("temp/out.mp4")
-        f = open("temp/inputs.txt", "w", encoding="utf-8")
-        f.write(f"file '{vids.splitlines()[0]}'" + "\n" + "file 'temp/vid720.mp4'")
-
         process = await asyncio.create_subprocess_exec(
             *merge_command,
             stdout=asyncio.subprocess.PIPE,
@@ -505,6 +490,7 @@ async def urlss(client, message):
         print(e)
         await client.send_message(chat_id, 'An error occured!\nCheck logs for details of the error!')
         pass
+    return
     try:
         os.remove("temp/inputs.txt")
     except:
