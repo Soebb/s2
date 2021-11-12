@@ -467,13 +467,10 @@ async def urlss(client, message):
 
     try:
         #os.system("mp4box -add temp/vid3.mp4 -cat temp/vid2.mp4 temp/out.mp4")
-        
-        process = await asyncio.create_subprocess_exec(
-            *merge_command,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        
+        clip1 = VideoFileClip("temp/vid720.mp4")
+        clip2 = VideoFileClip("temp/vid2.mp4")
+        Merge = concatenate_videoclips([clip1, clip2])
+        Merge.write_videofile("temp/out.mp4")
         #mkv1 = MKVFile('temp/vid3.mkv')
         #mkv2 = MKVFile('temp/vid2.mkv')
         #mkv1.add_file(mkv2)
