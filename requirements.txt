@@ -1,0 +1,8 @@
+pyrogram
+tgcrypto
+pyromod
+pymkv
+moviepy
+pysubs2
+requests
+youtube-dl
